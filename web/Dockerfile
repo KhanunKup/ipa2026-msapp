@@ -1,7 +1,7 @@
 FROM python
 WORKDIR /home/myapp
 # Install dependencies first for better layer caching
-RUN pip install flask --no-cache-dir flask 
+RUN pip install --no-cache-dir flask pymongo
 
 # Copy application files and folders
 COPY ./templates ./templates
