@@ -23,6 +23,34 @@ services:
       - app-net
     env_file:
       - .env
+    
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"      # port for RabbitMQ messaging
+      - "15672:15672"    # port for RabbitMQ management UI
+    networks:
+      - app-net
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin        # change default user to admin
+      - RABBITMQ_DEFAULT_PASS=rabbitmq     # เchange default password to rabbitmq
+
+  scheduler:
+    build: ./scheduler
+    restart: always
+    # wait for mongo and rabbitmq to be ready before starting the scheduler
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - app-net
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_URI=amqp://admin:rabbitmq@rabbitmq:5672/
+      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/?authSource=admin
+      - DB_NAME=ipa2026_db
+      - PYTHONUNBUFFERED=1
 
 volumes:
   mongo-data:
