@@ -36,5 +36,14 @@ def delete_router(id):
     routers.delete_one({"_id": ObjectId(id)})
     return redirect("/")
 
+@app.route('/router/<ip>')
+def router_detail(ip):
+    # Retrieve the last 3 interface statuses for the given IP
+    recent_statuses = list(db.interface_status.find(
+        {"router_ip": ip}
+    ).sort("timestamp", -1).limit(3))
+    
+    return render_template('router_detail.html', ip=ip, statuses=recent_statuses)
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8080)

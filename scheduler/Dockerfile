@@ -5,10 +5,10 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # 3. คัดลอกไฟล์ requirements.txt เข้ามาก่อนเพื่อติดตั้ง Dependencies
-COPY requirement.txt .
+COPY requirements.txt .
 
 # 4. ติดตั้ง Library ต่างๆ ที่ระบุไว้ใน requirements.txt โดยไม่เก็บแคชเพื่อลดขนาดไฟล์
-RUN pip install --no-cache-dir -r requirement.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 5. คัดลอกซอร์สโค้ด Python ทั้งหมดจากเครื่องของเราเข้าไปใน Container
 COPY . .

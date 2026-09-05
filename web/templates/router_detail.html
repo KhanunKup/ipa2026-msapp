@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Router {{ ip }} Details</title>
+    <!-- Basic styling to match your existing light blue theme -->
+    <style>
+        body {
+            background-color: #b3c6df;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Interface Status History: {{ ip }}</h1>
+    <p><a href="/">← Back to Routers List</a></p>
+
+    {% if statuses %}
+    {% for status in statuses %}
+    <h3>Timestamp: {{ status.timestamp }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Interface</th>
+                <th>IP Address</th>
+                <th>Status</th>
+                <th>Protocol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for iface in status.interfaces %}
+            <tr>
+                <td>{{ iface.interface }}</td>
+                <td>{{ iface.ip_address }}</td>
+                <td>{{ iface.status }}</td>
+                <td>{{ iface.protocol }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+    {% else %}
+    <p>No status history found for this router yet.</p>
+    {% endif %}
+</body>
+
+</html>
