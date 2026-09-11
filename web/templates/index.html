@@ -16,12 +16,16 @@
 
   <ul>
     {% for router in routers %}
+    <!-- Inside your existing index.html router loop -->
     <li>
       <a href="/router/{{ router.ip }}">{{ router.ip }}</a> - {{ router.username }}
-      <button>Delete</button>
+      <form action="/delete/{{ router._id }}" method="POST" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
     </li>
     {% endfor %}
   </ul>
 
 </body>
+
 </html>

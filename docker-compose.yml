@@ -31,9 +31,8 @@ services:
       - "15672:15672"    # port for RabbitMQ management UI
     networks:
       - app-net
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin        # change default user to admin
-      - RABBITMQ_DEFAULT_PASS=rabbitmq     # เchange default password to rabbitmq
+    env_file:
+      - .env
 
   scheduler:
     build: ./scheduler
@@ -47,7 +46,7 @@ services:
     env_file:
       - .env
     environment:
-      - RABBITMQ_URI=amqp://admin:rabbitmq@rabbitmq:5672/
+      - RABBITMQ_URI=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672/
       - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/?authSource=admin
       - DB_NAME=ipa2026_db
       - PYTHONUNBUFFERED=1
@@ -64,8 +63,6 @@ services:
       - .env
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=rabbitmq
       - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/?authSource=admin
       - DB_NAME=ipa2026_db
       - PYTHONUNBUFFERED=1
